@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#171923">
+  <title>Sweet Gift Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div id="login-screen" class="login-wrap">
+    <form id="login-form" class="login-card">
+      <div class="brand-mark">🎀</div>
+      <p class="eyebrow">SWEET GIFT · MANAGEMENT</p>
+      <h1>Welcome back</h1>
+      <p class="muted">Đăng nhập vào hệ thống quản trị cửa hàng.</p>
+      <label>Email quản trị<input id="login-email" type="email" autocomplete="username" required placeholder="admin@example.com"></label>
+      <label>Mật khẩu<input id="login-password" type="password" autocomplete="current-password" required placeholder="••••••••"></label>
+      <button class="btn primary full" type="submit">Đăng nhập <span>→</span></button>
+      <p id="login-error" class="error"></p>
+      <p class="tiny muted">Chỉ tài khoản được cấp quyền quản trị mới có thể truy cập.</p>
+    </form>
+  </div>
+
+  <div id="app" class="app-shell hidden">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand"><span class="brand-mark small">🎀</span><div><strong>Sweet Gift</strong><small>ADMIN STUDIO</small></div></div>
+      <div class="nav-label">WORKSPACE</div>
+      <nav>
+        <button class="nav-item active" data-page="overview"><span>▦</span>Tổng quan</button>
+        <button class="nav-item" data-page="orders"><span>▤</span>Đơn hàng <i id="pending-count" class="nav-count">0</i></button>
+        <button class="nav-item" data-page="products"><span>◇</span>Sản phẩm</button>
+        <button class="nav-item" data-page="customers"><span>♙</span>Khách hàng</button>
+        <button class="nav-item" data-page="inventory"><span>▥</span>Kho hàng</button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="support-card"><span>✦</span><b>Sweet Gift workspace</b><p>Quản lý cửa hàng của bạn trong một nơi.</p></div>
+        <button id="logout-btn" class="logout-btn">↪ Đăng xuất</button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <button id="menu-toggle" class="icon-btn mobile-only" aria-label="Mở menu">☰</button>
+        <div><p class="eyebrow">STORE MANAGEMENT</p><h2 id="page-heading">Tổng quan</h2></div>
+        <div class="top-actions"><span class="status-dot"></span><span class="muted small-text">Đã kết nối</span><div class="avatar">SG</div><div><b id="admin-email">Admin</b><small class="muted">Quản trị viên</small></div></div>
+      </header>
+
+      <section id="page-overview" class="page">
+        <div class="welcome-row"><div><h1>Xin chào! <span class="accent">✦</span></h1><p class="muted">Đây là tình hình cửa hàng Sweet Gift.</p></div><button class="btn secondary" id="refresh-overview">↻ Làm mới dữ liệu</button></div>
+        <div class="stats-grid">
+          <article class="stat-card"><div class="stat-top"><span>Doanh thu đã hoàn thành</span><span class="stat-icon pink">₫</span></div><strong id="stat-revenue">—</strong><small class="muted">Từ các đơn đã hoàn thành</small></article>
+          <article class="stat-card"><div class="stat-top"><span>Tổng đơn hàng</span><span class="stat-icon purple">▤</span></div><strong id="stat-orders">—</strong><small class="muted">Tất cả đơn hàng</small></article>
+          <article class="stat-card"><div class="stat-top"><span>Đơn cần xử lý</span><span class="stat-icon orange">◷</span></div><strong id="stat-pending">—</strong><small class="muted">Chờ xác nhận / xử lý</small></article>
+          <article class="stat-card"><div class="stat-top"><span>Sản phẩm đang bán</span><span class="stat-icon green">◇</span></div><strong id="stat-products">—</strong><small class="muted">Sản phẩm đang hoạt động</small></article>
+        </div>
+        <div class="content-grid">
+          <article class="panel chart-panel"><div class="panel-heading"><div><h3>Doanh thu gần đây</h3><p class="muted">Tổng giá trị đơn hoàn thành theo ngày</p></div><span class="pill">7 ngày gần nhất</span></div><div class="chart-box"><canvas id="revenue-chart"></canvas></div></article>
+          <article class="panel"><div class="panel-heading"><div><h3>Trạng thái đơn</h3><p class="muted">Phân bổ đơn hàng hiện tại</p></div></div><div class="chart-box doughnut"><canvas id="status-chart"></canvas></div><div id="status-legend" class="legend"></div></article>
+        </div>
+        <article class="panel"><div class="panel-heading"><div><h3>Đơn hàng mới nhất</h3><p class="muted">Theo dõi các đơn vừa được tạo</p></div><button class="text-btn" data-goto="orders">Xem tất cả →</button></div><div class="table-wrap"><table><thead><tr><th>MÃ ĐƠN</th><th>KHÁCH HÀNG</th><th>NGÀY ĐẶT</th><th>TỔNG TIỀN</th><th>TRẠNG THÁI</th></tr></thead><tbody id="recent-orders"></tbody></table></div></article>
+      </section>
+
+      <section id="page-orders" class="page hidden">
+        <div class="page-intro"><div><h1>Đơn hàng</h1><p class="muted">Theo dõi, xác nhận và cập nhật đơn của khách.</p></div><button class="btn secondary" id="refresh-orders">↻ Làm mới</button></div>
+        <div class="toolbar"><input id="order-search" class="search" placeholder="⌕  Tìm mã đơn hoặc tên khách..."><select id="order-filter"><option value="all">Tất cả trạng thái</option><option value="pending">Chờ xác nhận</option><option value="confirmed">Đã xác nhận</option><option value="processing">Đang chuẩn bị</option><option value="shipping">Đang giao</option><option value="completed">Hoàn thành</option><option value="cancelled">Đã hủy</option></select></div>
+        <article class="panel"><div class="table-wrap"><table><thead><tr><th>MÃ ĐƠN</th><th>KHÁCH HÀNG</th><th>LIÊN HỆ</th><th>NGÀY ĐẶT</th><th>TỔNG TIỀN</th><th>TRẠNG THÁI</th><th></th></tr></thead><tbody id="orders-table"></tbody></table></div></article>
+      </section>
+
+      <section id="page-products" class="page hidden">
+        <div class="page-intro"><div><h1>Sản phẩm</h1><p class="muted">Quản lý danh mục, giá bán và thông tin sản phẩm.</p></div><button class="btn primary" id="add-product">＋ Thêm sản phẩm</button></div>
+        <div class="toolbar"><input id="product-search" class="search" placeholder="⌕  Tìm tên sản phẩm..."><select id="product-filter"><option value="all">Tất cả</option><option value="active">Đang bán</option><option value="inactive">Đã ẩn</option></select></div>
+        <article class="panel"><div class="table-wrap"><table><thead><tr><th>SẢN PHẨM</th><th>DANH MỤC</th><th>GIÁ BÁN</th><th>TỒN KHO</th><th>TRẠNG THÁI</th><th></th></tr></thead><tbody id="products-table"></tbody></table></div></article>
+      </section>
+
+      <section id="page-customers" class="page hidden">
+        <div class="page-intro"><div><h1>Khách hàng</h1><p class="muted">Thông tin và lịch sử mua hàng của khách.</p></div></div>
+        <div class="toolbar"><input id="customer-search" class="search" placeholder="⌕  Tìm tên, email hoặc số điện thoại..."></div>
+        <article class="panel"><div class="table-wrap"><table><thead><tr><th>KHÁCH HÀNG</th><th>EMAIL</th><th>SỐ ĐIỆN THOẠI</th><th>ĐỊA CHỈ</th><th>SỐ ĐƠN</th><th>TỔNG CHI</th></tr></thead><tbody id="customers-table"></tbody></table></div></article>
+      </section>
+
+      <section id="page-inventory" class="page hidden">
+        <div class="page-intro"><div><h1>Kho hàng</h1><p class="muted">Theo dõi số lượng tồn và sản phẩm sắp hết hàng.</p></div><button class="btn secondary" id="refresh-inventory">↻ Làm mới</button></div>
+        <div class="stats-grid two"><article class="stat-card"><div class="stat-top"><span>Tổng sản phẩm</span><span class="stat-icon purple">◇</span></div><strong id="inventory-total">—</strong></article><article class="stat-card"><div class="stat-top"><span>Sắp hết hàng (≤ 5)</span><span class="stat-icon orange">!</span></div><strong id="inventory-low">—</strong></article></div>
+        <article class="panel"><div class="table-wrap"><table><thead><tr><th>SẢN PHẨM</th><th>MÃ SKU</th><th>TỒN KHO</th><th>CẬP NHẬT SỐ LƯỢNG</th></tr></thead><tbody id="inventory-table"></tbody></table></div></article>
+      </section>
+    </main>
+  </div>
+
+  <dialog id="product-dialog" class="modal">
+    <form id="product-form" method="dialog">
+      <div class="modal-head"><div><p class="eyebrow">PRODUCT MANAGEMENT</p><h2 id="product-dialog-title">Thêm sản phẩm</h2></div><button type="button" class="icon-btn" id="close-product">×</button></div>
+      <input type="hidden" id="product-id">
+      <label>Tên sản phẩm<input id="p-name" required maxlength="140" placeholder="Ví dụ: Hộp quà pastel"></label>
+      <div class="form-row"><label>Giá bán (VND)<input id="p-price" type="number" min="0" required></label><label>Số lượng tồn<input id="p-stock" type="number" min="0" value="0" required></label></div>
+      <div class="form-row"><label>Danh mục<select id="p-category" required>
+        <option value="box">Hộp quà</option><option value="plush">Thú bông</option>
+        <option value="flower">Hoa & phụ kiện</option><option value="custom">Cá nhân hóa</option>
+      </select></label><label>Mã SKU<input id="p-sku" placeholder="SG-001"></label></div>
+      <label>Đường dẫn hình ảnh<input id="p-image" type="url" placeholder="https://..."></label>
+      <label>Mô tả<textarea id="p-description" rows="3"></textarea></label>
+      <label class="check-label"><input id="p-active" type="checkbox" checked> Hiển thị sản phẩm trên website</label>
+      <div class="modal-actions"><button type="button" class="btn secondary" id="cancel-product">Hủy</button><button type="submit" class="btn primary">Lưu sản phẩm</button></div>
+      <p id="product-error" class="error"></p>
+    </form>
+  </dialog>
+
+  <dialog id="order-dialog" class="modal wide">
+    <div class="modal-head"><div><p class="eyebrow">ORDER DETAILS</p><h2>Chi tiết đơn hàng</h2></div><button class="icon-btn" id="close-order">×</button></div>
+    <div id="order-detail-content"></div>
+  </dialog>
+  <div id="toast" class="toast"></div>
+  <script src="assets/app.js"></script>
+</body>
+</html>

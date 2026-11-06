@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Sweet Gift - Trao yêu thương qua những món quà ngọt ngào.">
+  <title>Sweet Gift — Make Every Moment Sweeter</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="announcement">Một món quà nhỏ — ngàn điều yêu thương ♡ <span>Miễn phí gói quà cho đơn từ 299.000đ</span></div>
+  <header class="site-header">
+    <a class="brand" href="#" aria-label="Sweet Gift trang chủ">
+      <span class="brand-bow">୨୧</span><span>sweet<span class="brand-accent">gift</span><small>MAKE EVERY MOMENT SWEETER</small></span>
+    </a>
+    <button class="menu-toggle" id="menuToggle" aria-label="Mở menu">☰</button>
+    <nav id="mainNav">
+      <a href="#home">Trang chủ</a><a href="#shop">Cửa hàng</a><a href="#about">Về chúng mình</a><a href="#contact">Liên hệ</a>
+    </nav>
+    <button class="cart-trigger" id="openCart" aria-label="Mở giỏ hàng">Giỏ hàng <span id="cartCount">0</span></button>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <div class="hero-copy">
+        <p class="eyebrow">GIFT SOMETHING MEANINGFUL</p>
+        <h1>Gói trọn yêu thương<br>trong từng <em>món quà.</em></h1>
+        <p class="hero-desc">Dù là một dịp đặc biệt hay chỉ đơn giản muốn ai đó mỉm cười, Sweet Gift luôn có món quà dành cho bạn.</p>
+        <div class="hero-actions"><a class="btn btn-primary" href="#shop">Khám phá quà tặng <span>→</span></a><a class="text-link" href="#about">Câu chuyện của chúng mình</a></div>
+        <div class="hero-note"><span>♡</span> Được chuẩn bị bằng cả sự chân thành</div>
+      </div>
+      <div class="hero-art">
+        <div class="hero-blob"></div>
+        <img src="https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&w=1100&q=85" alt="Hộp quà hồng được gói bằng ruy băng">
+        <div class="floating-note">A little box<br>of happiness ♡</div>
+      </div>
+    </section>
+
+    <section class="benefits">
+      <div><span>✿</span><p><b>Gói quà xinh xắn</b><small>Chỉn chu trong từng chi tiết</small></p></div>
+      <div><span>♡</span><p><b>Cá nhân hóa</b><small>Gửi lời nhắn của riêng bạn</small></p></div>
+      <div><span>✧</span><p><b>Giao hàng tận nơi</b><small>Trao quà đến người thương</small></p></div>
+    </section>
+
+    <section class="shop-section section-wrap" id="shop">
+      <div class="section-heading">
+        <div><p class="eyebrow">A GIFT FOR EVERY HEART</p><h2>Chọn quà theo <em>cảm xúc</em></h2><p class="muted">Tìm một điều bé xinh để ngày hôm nay thêm đáng nhớ.</p></div>
+        <a class="text-link" href="#shop">Xem tất cả sản phẩm ↗</a>
+      </div>
+      <div class="filters" id="filters">
+        <button class="filter active" data-category="all">Tất cả</button>
+        <button class="filter" data-category="box">Hộp quà</button>
+        <button class="filter" data-category="plush">Thú bông</button>
+        <button class="filter" data-category="flower">Hoa & phụ kiện</button>
+        <button class="filter" data-category="custom">Cá nhân hóa</button>
+      </div>
+      <div class="product-grid" id="productGrid"></div>
+    </section>
+
+    <section class="custom-banner section-wrap" id="about">
+      <div class="custom-image"><img src="https://images.unsplash.com/photo-1513201099705-a9746e1e201f?auto=format&fit=crop&w=1000&q=85" alt="Hộp quà và thiệp chúc mừng"></div>
+      <div class="custom-copy"><p class="eyebrow">MAKE IT PERSONAL</p><h2>Món quà mang<br>dấu ấn <em>riêng bạn.</em></h2><p>Thêm một tấm thiệp, một cái tên hay lời nhắn chân thành. Những chi tiết nhỏ khiến món quà trở nên không thể thay thế.</p><a href="#shop" class="btn btn-light">Chọn quà ngay <span>→</span></a></div>
+    </section>
+
+    <section class="newsletter section-wrap" id="contact">
+      <p class="eyebrow">A LITTLE LOVE IN YOUR INBOX</p><h2>Nhận chút ngọt ngào nhé!</h2><p class="muted">Đăng ký để cập nhật bộ sưu tập mới và những ưu đãi dễ thương.</p>
+      <form id="newsletterForm" class="newsletter-form"><input type="email" placeholder="Email của bạn" required aria-label="Email của bạn"><button class="btn btn-primary">Đăng ký</button></form>
+      <small id="newsletterMessage" aria-live="polite"></small>
+    </section>
+  </main>
+
+  <footer><a class="brand footer-brand" href="#"><span class="brand-bow">୨୧</span><span>sweet<span class="brand-accent">gift</span><small>MAKE EVERY MOMENT SWEETER</small></span></a><p>Trao yêu thương, gửi điều ngọt ngào. ♡</p><small>© 2026 Sweet Gift. Made with love.</small></footer>
+
+  <div class="drawer-backdrop" id="drawerBackdrop"></div>
+  <aside class="cart-drawer" id="cartDrawer" aria-label="Giỏ hàng" aria-hidden="true">
+    <div class="drawer-head"><div><p class="eyebrow">YOUR LITTLE TREASURES</p><h2>Giỏ hàng <span id="drawerCount">(0)</span></h2></div><button class="icon-btn" id="closeCart" aria-label="Đóng">×</button></div>
+    <div class="cart-items" id="cartItems"></div>
+    <div class="cart-bottom"><div class="subtotal"><span>Tạm tính</span><b id="subtotal">0đ</b></div><p class="shipping-note">Phí vận chuyển sẽ được xác nhận khi đặt hàng.</p><button class="btn btn-primary checkout-btn" id="checkoutBtn">Tiến hành đặt hàng <span>→</span></button></div>
+  </aside>
+
+  <div class="modal-backdrop" id="checkoutBackdrop">
+    <section class="checkout-modal" role="dialog" aria-modal="true" aria-labelledby="checkoutTitle">
+      <button class="icon-btn modal-close" id="closeCheckout" aria-label="Đóng">×</button>
+      <div id="checkoutContent">
+        <p class="eyebrow">ALMOST THERE ♡</p><h2 id="checkoutTitle">Thông tin nhận quà</h2><p class="muted">Điền thông tin để Sweet Gift chuẩn bị đơn hàng cho bạn.</p>
+        <form id="checkoutForm" class="checkout-form">
+          <label>Họ và tên<input name="name" required placeholder="Tên người nhận"></label>
+          <label>Số điện thoại<input name="phone" required inputmode="tel" pattern="[0-9+ .()-]{9,}" placeholder="09xx xxx xxx"></label>
+          <label>Địa chỉ nhận hàng<textarea name="address" required rows="2" placeholder="Số nhà, đường, phường/xã, tỉnh/thành"></textarea></label>
+          <label>Lời nhắn / nội dung thiệp <span class="optional">(không bắt buộc)</span><textarea name="note" rows="2" placeholder="Chúc bạn luôn vui vẻ..."></textarea></label>
+          <div class="order-summary"><span>Tổng sản phẩm</span><b id="checkoutTotal">0đ</b></div>
+          <button class="btn btn-primary full-btn" type="submit">Xác nhận đặt hàng ♡</button>
+        </form>
+      </div>
+      <div class="success-state" id="successState" hidden><div class="success-icon">♡</div><p class="eyebrow">THANK YOU!</p><h2>Đặt hàng thành công</h2><p id="successMessage">Sweet Gift đã ghi nhận đơn hàng của bạn.</p><button class="btn btn-primary full-btn" id="doneBtn">Tiếp tục mua sắm</button></div>
+    </section>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="script.js"></script>
+</body>
+</html>
